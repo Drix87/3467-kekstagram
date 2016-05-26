@@ -1,15 +1,17 @@
 function getMessage(a,b) {
-  if(a){
-    return 'Переданное GIF-изображение анимировано и содержит ' + b + ' кадров';
-  } else {
-    return 'Переданное GIF-изображение не анимировано';
+  if(typeof a === 'boolean'){
+    if (a === true) {
+      return 'Переданное GIF-изображение анимировано и содержит ' + b + ' кадров';
+    } else {
+      return 'Переданное GIF-изображение не анимировано';
+    }
   }
 
   if (typeof a === 'number') {
     return 'Переданное SVG-изображение содержит ' + a + ' объектов и ' + b * 4 + ' атрибутов';
   }
 
-  if (typeof a === 'object') {
+   if (Array.isArray(a)) {
 
     var arrLength = a.length;
     var sum = 0;
