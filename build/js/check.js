@@ -1,10 +1,7 @@
 function getMessage(a,b) {
 
   function multiply(nameArray1, nameArray2){
-    var arrLength1 = nameArray1.length;
-    var arrLength2 = nameArray2.length;
-
-    for (var i = 0, sum = 0; i < arrLength1; i++) {
+    for (var i = 0, sum = 0; i < nameArray1.length; i++) {
       sum += nameArray1[i] * nameArray2[i];
     }
     return sum;
@@ -23,22 +20,16 @@ function getMessage(a,b) {
   }
 
   if (Array.isArray(a) && Array.isArray(b)) {
-
     var square = multiply(a,b);
-
     return 'Общая площадь артефактов сжатия: ' + square + ' пикселей';
   }
 
-     if (Array.isArray(a)) {
-
-      var arrLength = a.length;
-      var sum = 0;
-      for (var i = 0; i < arrLength; i++) {
-        sum += a[i];
-      }
-
-      return 'Количество красных точек во всех строчках изображения: ' + sum;
+   if (Array.isArray(a)) {
+    var sum = 0;
+    for (var i = 0; i < a.length; i++) {
+      sum += a[i];
     }
-
+    return 'Количество красных точек во всех строчках изображения: ' + sum;
+  }
 }
 
