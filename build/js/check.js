@@ -7,7 +7,7 @@ function getMessage(a,b) {
     return sum;
   }
 
-  if(typeof a === 'boolean'){
+  if (typeof a === 'boolean'){
     if (a) {
       return 'Переданное GIF-изображение анимировано и содержит ' + b + ' кадров';
     } else {
@@ -24,7 +24,7 @@ function getMessage(a,b) {
     return 'Общая площадь артефактов сжатия: ' + square + ' пикселей';
   }
 
-   if (Array.isArray(a)) {
+  if (Array.isArray(a)) {
     var sum = 0;
     for (var i = 0; i < a.length; i++) {
       sum += a[i];
@@ -32,4 +32,3 @@ function getMessage(a,b) {
     return 'Количество красных точек во всех строчках изображения: ' + sum;
   }
 }
-
