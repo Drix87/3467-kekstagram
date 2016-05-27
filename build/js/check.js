@@ -1,13 +1,13 @@
 function getMessage(a,b) {
 
-  function multiply(nameArray){
-    var arrLength = nameArray.length;
-    var result = 1;
+  function multiply(nameArray1, nameArray2){
+    var arrLength1 = nameArray1.length;
+    var arrLength2 = nameArray2.length;
 
-    for (var i = 0; i < arrLength; i++) {
-      result *= nameArray[i];
+    for (var i = 0, sum = 0; i < arrLength1; i++) {
+      sum += nameArray1[i] * nameArray2[i];
     }
-    return result;
+    return sum;
   }
 
   if(typeof a === 'boolean'){
@@ -24,9 +24,7 @@ function getMessage(a,b) {
 
   if (Array.isArray(a) && Array.isArray(b)) {
 
-    var aResult = multiply(a);
-    var bResult = multiply(b);
-    var square = aResult + bResult;
+    var square = multiply(a,b);
 
     return 'Общая площадь артефактов сжатия: ' + square + ' пикселей';
   }
