@@ -126,7 +126,23 @@
       // 0 0 находится в левом верхнем углу холста, в противном случае
       // некорректно сработает даже очистка холста или нужно будет использовать
       // сложные рассчеты для координат прямоугольника, который нужно очистить.
+
+      // Затемнение
+      this._ctx.fillStyle = 'rgba(0,0,0,0.8)';
+      this._ctx.fillRect(displX, displY, this._container.width, this._container.height);
+
+
+
+      // Вывод размера загружаемого изображения
+      this._ctx.font = '30px Tahoma';
+      this._ctx.fillStyle = "white";
+      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, (-this._resizeConstraint.side/2), (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 5);
+
       this._ctx.restore();
+
+      // Вывод прозрачного блока
+      // this._ctx.fillStyle = 'white';
+      // this._ctx.fillRect(0, 0, 500, 500);
     },
 
     /**
