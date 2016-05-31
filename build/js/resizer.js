@@ -114,6 +114,7 @@
 
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
+
       this._ctx.strokeRect(
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
@@ -135,8 +136,8 @@
 
       // Вывод размера загружаемого изображения
       this._ctx.font = '30px Tahoma';
-      this._ctx.fillStyle = "white";
-      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, (-this._resizeConstraint.side/2), (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 5);
+      this._ctx.fillStyle = 'white';
+      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, (-this._resizeConstraint.side / 2), (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 5);
 
       this._ctx.restore();
 
