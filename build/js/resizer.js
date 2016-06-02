@@ -140,11 +140,13 @@
       this._ctx.lineTo((this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
       this._ctx.fill('evenodd');
 
-
       // Вывод размера загружаемого изображения
-      this._ctx.font = '30px Tahoma';
+      this._ctx.font = '30px Courier';
       this._ctx.fillStyle = 'white';
-      this._ctx.fillText(this._image.naturalWidth + ' x ' + this._image.naturalHeight, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 5);
+      var WIDTH_ONE_CHARCTER = 10;
+      var textContent = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
+      var widthTextContent = textContent.length * WIDTH_ONE_CHARCTER;
+      this._ctx.fillText(textContent, -widthTextContent, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 5);
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
@@ -163,6 +165,8 @@
      * @param {number} y
      * @private
      */
+
+
     _enterDragMode: function(x, y) {
       this._cursorPosition = new Coordinate(x, y);
       document.body.addEventListener('mousemove', this._onDrag);
