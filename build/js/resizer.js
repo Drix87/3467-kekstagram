@@ -102,6 +102,16 @@
       // Подробней см. строку 132.
       this._ctx.save();
 
+      // Затемнение
+      this._ctx.beginPath();
+      this._ctx.fillStyle = 'white';
+
+      this._ctx.moveTo(0, 0);
+      this._ctx.lineTo(this._image.naturalWidth, 0);
+      this._ctx.lineTo(this._image.naturalWidth, this._image.naturalHeight);
+      this._ctx.lineTo(0, this._image.naturalHeight);
+      this._ctx.lineTo(0, this._image.naturalHeight);
+
       // Установка начальной точки системы координат в центр холста.
       this._ctx.translate(this._container.width / 2, this._container.height / 2);
 
@@ -114,11 +124,29 @@
 
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
+
       this._ctx.strokeRect(
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
           (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
+
+      // Выделение центральной части кадрирования
+      this._ctx.fillStyle = 'rgba(0,0,0,0.8)';
+      this._ctx.moveTo((-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
+          (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
+      this._ctx.lineTo((-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2);
+      this._ctx.lineTo((this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, (this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
+      this._ctx.lineTo((this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2);
+      this._ctx.fill('evenodd');
+
+      // Вывод размера загружаемого изображения
+      this._ctx.font = '30px Courier';
+      this._ctx.fillStyle = 'white';
+      var WIDTH_ONE_CHARCTER = 10;
+      var textContent = this._image.naturalWidth + ' x ' + this._image.naturalHeight;
+      var widthTextContent = textContent.length * WIDTH_ONE_CHARCTER;
+      this._ctx.fillText(textContent, -widthTextContent, (-this._resizeConstraint.side / 2) - this._ctx.lineWidth * 5);
 
       // Восстановление состояния канваса, которое было до вызова ctx.save
       // и последующего изменения системы координат. Нужно для того, чтобы
@@ -137,6 +165,8 @@
      * @param {number} y
      * @private
      */
+
+
     _enterDragMode: function(x, y) {
       this._cursorPosition = new Coordinate(x, y);
       document.body.addEventListener('mousemove', this._onDrag);
