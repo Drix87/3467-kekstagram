@@ -147,11 +147,10 @@
   yPoint.value = 0;
 
   for (var i = fields.length - 1; i >= 0; i--) {
-    fields[i].oninput = function(){
+    fields[i].oninput = function() {
       if ((+xPoint.value + +sizeSide.value) > currentResizer._image.naturalWidth
        || (+yPoint.value + +sizeSide.value) > currentResizer._image.naturalHeight) {
         submit.setAttribute('disabled', '');
-        alret()
       } else {
         submit.removeAttribute('disabled');
       }
