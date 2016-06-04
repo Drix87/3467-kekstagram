@@ -132,6 +132,32 @@
     uploadMessage.classList.add('invisible');
   }
 
+  // Валидация формы
+  var fields = document.querySelectorAll('.upload-resize-controls > input');
+  var xPoint = document.querySelector('#resize-x');
+  var yPoint = document.querySelector('#resize-y');
+  var sizeSide = document.querySelector('#resize-size');
+  var submit = document.querySelector('#resize-fwd');
+
+
+  // Поля «сверху» и «слева» не могут быть отрицательными.
+  xPoint.min = 0;
+  yPoint.min = 0;
+  xPoint.value = 0;
+  yPoint.value = 0;
+
+  for (var i = fields.length - 1; i >= 0; i--) {
+    fields[i].oninput = function(){
+      if ((+xPoint.value + +sizeSide.value) > currentResizer._image.naturalWidth
+       || (+yPoint.value + +sizeSide.value) > currentResizer._image.naturalHeight) {
+        submit.setAttribute('disabled', '');
+        alret()
+      } else {
+        submit.removeAttribute('disabled');
+      }
+    };
+  }
+
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
    * файл является изображением, считывается исходник картинки, создается
