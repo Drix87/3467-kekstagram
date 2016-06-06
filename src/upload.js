@@ -160,18 +160,6 @@
     };
   }
 
-  // Сохраняем последний выбранный фильтр
-  var checkboxes = document.querySelectorAll('.upload-filter-controls > input');
-  for (var i = checkboxes.length - 1; i >= 0; i--) {
-    checkboxes[i].onchange = function() {
-      if (checkboxes[i].checked) {
-        console.log("Чекнутый");
-      } else {
-        console.log("!!!");
-      }
-    }
-  };
-
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
    * файл является изображением, считывается исходник картинки, создается
@@ -240,6 +228,10 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+
+    // Установить значение cookie, если оно сохранено
+    browserCookies.get('filterActive');
+
   };
 
   /**
@@ -261,12 +253,31 @@
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    // Сохраняем последний выбранный фильтр
+    var checkboxes = document.querySelectorAll('.upload-filter-controls > input');
+    for (var i = checkboxes.length - 1; i >= 0; i--) {
+        if (checkboxes[i].checked) {
+          var checkItem = checkboxes[i];
+
+          console.log(checkItem);
+
+          browserCookies.set('filterActive', checkItem.setAttribute('checked', ''), {
+            expires: calculateDays()
+          });
+        }
+      };
+
     cleanupResizer();
     updateBackground();
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+
+  function calculateDays() {
+    var myBirthday = new Date('1987-09-30');
+    return Math.ceil((Date.now() - myBirthday) / 24 / 60 / 60 / 1000);
+  }
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
