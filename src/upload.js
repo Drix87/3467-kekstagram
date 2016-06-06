@@ -41,6 +41,9 @@
    */
   var currentResizer;
 
+  // Библиотека browser-cookies
+  var browserCookies = require('browser-cookies');
+
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -156,6 +159,18 @@
       }
     };
   }
+
+  // Сохраняем последний выбранный фильтр
+  var checkboxes = document.querySelectorAll('.upload-filter-controls > input');
+  for (var i = checkboxes.length - 1; i >= 0; i--) {
+    checkboxes[i].onchange = function() {
+      if (checkboxes[i].checked) {
+        console.log("Чекнутый");
+      } else {
+        console.log("!!!");
+      }
+    }
+  };
 
   /**
    * Обработчик изменения изображения в форме загрузки. Если загруженный
