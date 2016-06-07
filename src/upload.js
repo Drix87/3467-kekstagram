@@ -144,15 +144,14 @@
 
 
   // Поля «сверху» и «слева» не могут быть отрицательными.
-  xPoint.min = 0;
-  yPoint.min = 0;
   xPoint.value = 0;
   yPoint.value = 0;
 
   for (var i = fields.length - 1; i >= 0; i--) {
     fields[i].oninput = function() {
       if ((+xPoint.value + +sizeSide.value) > currentResizer._image.naturalWidth
-       || (+yPoint.value + +sizeSide.value) > currentResizer._image.naturalHeight) {
+       || (+yPoint.value + +sizeSide.value) > currentResizer._image.naturalHeight
+       || xPoint.value < 0 || yPoint.value < 0) {
         submit.setAttribute('disabled', '');
       } else {
         submit.removeAttribute('disabled');
