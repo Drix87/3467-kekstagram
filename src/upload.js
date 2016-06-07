@@ -258,9 +258,6 @@
     for (var x = checkboxes.length - 1; x >= 0; x--) {
       if (checkboxes[x].checked) {
         var checkItem = checkboxes[x];
-
-        console.log(checkItem);
-
         browserCookies.set('filterActive', checkItem.getAttribute('id'), {
           expires: calculateDays()
         });
