@@ -230,8 +230,8 @@
     }
 
     // Установить значение cookie, если оно сохранено
-    browserCookies.get('filterActive');
-
+    var filterActive = document.getElementById(browserCookies.get('filterActive'));
+    filterActive.setAttribute('checked', '');
   };
 
   /**
@@ -255,17 +255,17 @@
 
     // Сохраняем последний выбранный фильтр
     var checkboxes = document.querySelectorAll('.upload-filter-controls > input');
-    for (var i = checkboxes.length - 1; i >= 0; i--) {
-        if (checkboxes[i].checked) {
-          var checkItem = checkboxes[i];
+    for (var x = checkboxes.length - 1; x >= 0; x--) {
+      if (checkboxes[x].checked) {
+        var checkItem = checkboxes[x];
 
-          console.log(checkItem);
+        console.log(checkItem);
 
-          browserCookies.set('filterActive', checkItem.setAttribute('checked', ''), {
-            expires: calculateDays()
-          });
-        }
-      };
+        browserCookies.set('filterActive', checkItem.getAttribute('id'), {
+          expires: calculateDays()
+        });
+      }
+    }
 
     cleanupResizer();
     updateBackground();
