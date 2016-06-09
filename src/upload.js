@@ -254,9 +254,10 @@
 
     // Сохраняем последний выбранный фильтр
     var checkboxes = document.querySelectorAll('.upload-filter-controls > input');
-    for (var x = checkboxes.length - 1; x >= 0; x--) {
-      if (checkboxes[x].checked) {
-        var checkItem = checkboxes[x];
+    var checkboxesLen = checkboxes.length;
+    for (var j = 0; j < checkboxesLen; j++) {
+      if (checkboxes[j].checked) {
+        var checkItem = checkboxes[j];
         browserCookies.set('filterActive', checkItem.getAttribute('id'), {
           expires: calculateDays()
         });
@@ -272,7 +273,15 @@
 
   function calculateDays() {
     var myBirthday = new Date('1987-09-30');
-    return Math.ceil((Date.now() - myBirthday) / 24 / 60 / 60 / 1000);
+    var actualDay = new Date();
+    var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
+    if((Date.now() - myBirthdayActualYear) > 0) {
+      return Math.ceil((Date.now() - myBirthdayActualYear) / 24 / 60 / 60 / 1000);
+      } else {
+      return Math.ceil((Date.now() - (myBirthdayActualYear - 365 * 24 * 60 * 60 * 1000)) / 24 / 60 / 60 / 1000);
+      }
+
+
   }
 
   /**
