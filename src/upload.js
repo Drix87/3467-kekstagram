@@ -274,11 +274,16 @@
   function calculateDays() {
     var myBirthday = new Date('1987-09-30');
     var actualDay = new Date();
+    var SECONDS = 1000;
+    var MINUTES = SECONDS * 60;
+    var HOURS = MINUTES * 60;
+    var DAYS = HOURS * 24;
+    var YEARS = DAYS * 365;
     var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
     if((Date.now() - myBirthdayActualYear) > 0) {
-      return Math.ceil((Date.now() - myBirthdayActualYear) / 24 / 60 / 60 / 1000);
+      return Math.ceil((Date.now() - myBirthdayActualYear) / DAYS / HOURS / MINUTES / SECONDS);
     } else {
-      return Math.ceil((Date.now() - (myBirthdayActualYear - 365 * 24 * 60 * 60 * 1000)) / 24 / 60 / 60 / 1000);
+      return Math.ceil((Date.now() - (myBirthdayActualYear - YEARS * DAYS * HOURS * MINUTES * SECONDS)) / DAYS / HOURS / MINUTES / SECONDS);
     }
 
 
