@@ -277,9 +277,9 @@
     var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
     if((Date.now() - myBirthdayActualYear) > 0) {
       return Math.ceil((Date.now() - myBirthdayActualYear) / 24 / 60 / 60 / 1000);
-      } else {
+    } else {
       return Math.ceil((Date.now() - (myBirthdayActualYear - 365 * 24 * 60 * 60 * 1000)) / 24 / 60 / 60 / 1000);
-      }
+    }
 
 
   }
