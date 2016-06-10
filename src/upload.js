@@ -41,6 +41,9 @@
    */
   var currentResizer;
 
+  // Библиотека browser-cookies
+  var browserCookies = require('browser-cookies');
+
   /**
    * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
    * изображением.
@@ -224,6 +227,10 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+
+    // Установить значение cookie, если оно сохранено
+    var filterActive = document.getElementById(browserCookies.get('filterActive'));
+    filterActive.setAttribute('checked', '');
   };
 
   /**
@@ -245,12 +252,42 @@
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
+    // Сохраняем последний выбранный фильтр
+    var checkboxes = document.querySelectorAll('.upload-filter-controls > input');
+    var checkboxesLen = checkboxes.length;
+    for (var j = 0; j < checkboxesLen; j++) {
+      if (checkboxes[j].checked) {
+        var checkItem = checkboxes[j];
+        browserCookies.set('filterActive', checkItem.getAttribute('id'), {
+          expires: calculateDays()
+        });
+      }
+    }
+
     cleanupResizer();
     updateBackground();
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
   };
+
+  function calculateDays() {
+    var myBirthday = new Date('1987-09-30');
+    var actualDay = new Date();
+    var SECONDS = 1000;
+    var MINUTES = SECONDS * 60;
+    var HOURS = MINUTES * 60;
+    var DAYS = HOURS * 24;
+    var YEARS = DAYS * 365;
+    var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
+    if((Date.now() - myBirthdayActualYear) > 0) {
+      return Math.ceil((Date.now() - myBirthdayActualYear) / DAYS / HOURS / MINUTES / SECONDS);
+    } else {
+      return Math.ceil(Date.now() + (Date.now() - (myBirthdayActualYear - 1 * YEARS)));
+    }
+
+
+  }
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
