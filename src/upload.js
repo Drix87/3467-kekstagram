@@ -283,7 +283,7 @@
     if((Date.now() - myBirthdayActualYear) > 0) {
       return Math.ceil((Date.now() - myBirthdayActualYear) / DAYS / HOURS / MINUTES / SECONDS);
     } else {
-      return Math.ceil((Date.now() - (myBirthdayActualYear - 1 * YEARS)) / DAYS / HOURS / MINUTES / SECONDS);
+      return Math.ceil(Date.now() + (Date.now() - (myBirthdayActualYear - 1 * YEARS)));
     }
 
 
