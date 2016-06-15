@@ -96,20 +96,24 @@ var getFilteredPictures = function(picturesArr, filter) {
   switch (filter) {
     // Популярные — список фотографий, в том виде, в котором он был загружен
     case Filter.POPULAR:
-      picturesToFilter.sort(function(a, b) {
-        return a.price - b.price;
-      });
+      picturesToFilter.sort();
       break;
+
     // Новые — список фотографий, сделанных за последние четыре дня, отсортированные по убыванию даты (поле date).
     case Filter.NEW:
+      var lastFourDays = 4 * 24 * 60 * 60 * 1000;
+      var today = new Date();
       picturesToFilter.sort(function(a, b) {
-        return a.price - b.price;
+        if (b.date < a.date && a.date >= (today - lastFourDays)) {
+          return b.date - a.date;
+        }
       });
       break;
+
     // Обсуждаемые — отсортированные по убыванию количества комментариев (поле comments)
     case Filter.DISCUSS:
       picturesToFilter.sort(function(a, b) {
-        return a.price - b.price;
+        return b.comments - a.comments;
       });
       break;
   }
@@ -134,7 +138,7 @@ var setFiltrationEnabled = function() {
   var filtersItems = filters.querySelectorAll('.filters-item');
   for (var i = 0; i < filtersItems.length; i++) {
     filtersItems[i].onclick = function() {
-      setFilterEnabled(this.id);
+      setFilterEnabled(this.control.id);
     };
   }
 };
