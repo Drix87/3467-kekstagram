@@ -96,18 +96,18 @@ var getFilteredPictures = function(picturesArr, filter) {
   switch (filter) {
     // Популярные — список фотографий, в том виде, в котором он был загружен
     case Filter.POPULAR:
-      picturesToFilter.sort();
+      // picturesToFilter.sort();
       break;
 
     // Новые — список фотографий, сделанных за последние четыре дня, отсортированные по убыванию даты (поле date).
     case Filter.NEW:
       var lastFourDays = 4 * 24 * 60 * 60 * 1000;
       var today = new Date();
-      picturesToFilter.sort(function(a, b) {
-        if (b.date < a.date && a.date >= (today - lastFourDays)) {
-          return b.date - a.date;
-        }
-      });
+      var showLastFourDays = function(a) {
+        var dateImgDownload = new Date(a.date);
+        return dateImgDownload >= (today - lastFourDays);
+      };
+      picturesToFilter.filter(showLastFourDays);
       break;
 
     // Обсуждаемые — отсортированные по убыванию количества комментариев (поле comments)
