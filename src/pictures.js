@@ -94,19 +94,22 @@ var getFilteredPictures = function(picturesArr, filter) {
   var picturesToFilter = picturesArr.slice(0);
 
   switch (filter) {
+    // Популярные — список фотографий, в том виде, в котором он был загружен
     case Filter.POPULAR:
       picturesToFilter.sort(function(a, b) {
-        // return a.price - b.price;
+        return a.price - b.price;
       });
       break;
+    // Новые — список фотографий, сделанных за последние четыре дня, отсортированные по убыванию даты (поле date).
     case Filter.NEW:
       picturesToFilter.sort(function(a, b) {
-        // return a.price - b.price;
+        return a.price - b.price;
       });
       break;
+    // Обсуждаемые — отсортированные по убыванию количества комментариев (поле comments)
     case Filter.DISCUSS:
       picturesToFilter.sort(function(a, b) {
-        // return a.price - b.price;
+        return a.price - b.price;
       });
       break;
   }
@@ -135,12 +138,6 @@ var setFiltrationEnabled = function() {
     };
   }
 };
-
-  // Популярные — список фотографий, в том виде, в котором он был загружен
-
-  // Новые — список фотографий, сделанных за последние четыре дня, отсортированные по убыванию даты (поле date).
-
-  // Обсуждаемые — отсортированные по убыванию количества комментариев (поле comments)
 
 // Не забудьте, что при любом исходе загрузки (успех, ошибка, таймаут), нужно прятать прелоадер
 
