@@ -8,7 +8,13 @@ var PICTURES_LOAD_URL = 'https://o0.github.io/assets/json/pictures.json';
 
 var ACTIVE_FILTER_CLASSNAME = 'picture-filter-active';
 
-pictures = [];
+var pictures = [];
+
+var Filter = {
+  'POPULAR': 'filter-popular',
+  'NEW': 'filter-new',
+  'DISCUSS': 'filter-discussed'
+};
 
 if ('content' in templateElement) {
   elementToClone = templateElement.content.querySelector('.picture');
@@ -48,10 +54,8 @@ var getPictureElement = function(data, container) {
 
   elementImage.src = data.url;
 
-
   return element;
 };
-
 
 var getPictures = function(callback) {
   // Загрузите данные из файла //o0.github.io/assets/json/pictures.json по XMLHttpRequest.
@@ -78,26 +82,31 @@ var getPictures = function(callback) {
   xhr.send();
 };
 
-
-
-
-
-
-var renderPictures = function(pictures) {
+var renderPictures = function(picturesArr) {
   picturesContainer.innerHTML = '';
 
-  pictures.forEach(function(picture) {
+  picturesArr.forEach(function(picture) {
     getPictureElement(picture, picturesContainer);
   });
 };
 
-var getFilteredPictures = function(pictures, filter) {
-  var picturesToFilter = pictures.slice(0);
+var getFilteredPictures = function(picturesArr, filter) {
+  var picturesToFilter = picturesArr.slice(0);
 
   switch (filter) {
-    case 'expensive-first':
+    case Filter.POPULAR:
       picturesToFilter.sort(function(a, b) {
-        return a.price - b.price;
+        // return a.price - b.price;
+      });
+      break;
+    case Filter.NEW:
+      picturesToFilter.sort(function(a, b) {
+        // return a.price - b.price;
+      });
+      break;
+    case Filter.DISCUSS:
+      picturesToFilter.sort(function(a, b) {
+        // return a.price - b.price;
       });
       break;
   }
