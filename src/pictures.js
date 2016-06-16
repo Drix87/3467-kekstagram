@@ -26,7 +26,8 @@ if ('content' in templateElement) {
 var filters = document.querySelector('.filters');
 filters.classList.add('hidden');
 
-// Создаёт для каждой записи массива pictures блок фотографии на основе шаблона #picture-template. Шаблон находится в build/index.html.
+// Создаёт для каждой записи массива pictures блок фотографии на основе
+// шаблона #picture-template. Шаблон находится в build/index.html.
 var getPictureElement = function(data, container) {
   var element = elementToClone.cloneNode(true);
   element.setAttribute('href', data.url);
@@ -37,7 +38,8 @@ var getPictureElement = function(data, container) {
   // Выводит созданные элементы на страницу внутрь блока .pictures.
   var elementImage = new Image();
 
-  // Обработчик загрузки: после загрузки изображения, укажите тегу <img /> в шаблоне src загруженного изображения и задайте ему размеры 182×182.
+  // Обработчик загрузки: после загрузки изображения, укажите тегу <img />
+  // в шаблоне src загруженного изображения и задайте ему размеры 182×182.
   elementImage.onload = function() {
     var imageH = 182;
     var imageW = 182;
@@ -66,6 +68,11 @@ var getPictures = function(callback) {
     // console.log(evt.target)
     var loadedData = JSON.parse(evt.target.response);
     callback(loadedData);
+
+    // Не забудьте, что при любом исходе загрузки (успех, ошибка, таймаут),
+    // нужно прятать прелоадер
+    picturesContainer.classList.remove('pictures-loading');
+    picturesContainer.classList.remove('pictures-failure');
   };
 
   // Пока длится загрузка файла, покажите прелоадер, добавив класс .pictures-loading блоку .pictures.
@@ -73,7 +80,8 @@ var getPictures = function(callback) {
     picturesContainer.classList.add('pictures-loading');
   };
 
-  // Если загрузка закончится неудачно (ошибкой сервера или таймаутом), покажите предупреждение об ошибке, добавив блоку .pictures класс pictures-failure.
+  // Если загрузка закончится неудачно (ошибкой сервера или таймаутом),
+  // покажите предупреждение об ошибке, добавив блоку .pictures класс pictures-failure.
   if (xhr.status !== 200) {
     picturesContainer.classList.add('pictures-failure');
   }
@@ -99,7 +107,8 @@ var getFilteredPictures = function(picturesArr, filter) {
       // picturesToFilter.sort();
       break;
 
-    // Новые — список фотографий, сделанных за последние четыре дня, отсортированные по убыванию даты (поле date).
+    // Новые — список фотографий, сделанных за последние четыре дня,
+    // отсортированные по убыванию даты (поле date).
     case Filter.NEW:
       var lastFourDays = 4 * 24 * 60 * 60 * 1000;
       var today = new Date();
@@ -107,7 +116,7 @@ var getFilteredPictures = function(picturesArr, filter) {
         var dateImgDownload = new Date(a.date);
         return dateImgDownload >= (today - lastFourDays);
       };
-      picturesToFilter.filter(showLastFourDays);
+      picturesToFilter = picturesToFilter.filter(showLastFourDays);
       break;
 
     // Обсуждаемые — отсортированные по убыванию количества комментариев (поле comments)
@@ -115,6 +124,17 @@ var getFilteredPictures = function(picturesArr, filter) {
       picturesToFilter.sort(function(a, b) {
         return b.comments - a.comments;
       });
+      break;
+
+    // Сделайте так, чтобы если при фильтрации, ни один элемент из списка не
+    // подходит под выбранные критерии, в блоке выводилось соответствующее сообщение.
+    default:
+
+      var body = document.querySelector('body');
+      var templateError = document.querySelector('#error-filter');
+      var errorElement = templateError.content.querySelector('.error-wrapper');
+      errorElement = errorElement.cloneNode(true);
+      body.appendChild(errorElement);
       break;
   }
 
@@ -133,7 +153,8 @@ var setFilterEnabled = function(filter) {
   filterToActivate.classList.add(ACTIVE_FILTER_CLASSNAME);
 };
 
-// Напишите обработчики событий для фильтров, так, чтобы они сортировали загруженный список фотографий следующим образом:
+// Напишите обработчики событий для фильтров, так, чтобы они
+// сортировали загруженный список фотографий следующим образом:
 var setFiltrationEnabled = function() {
   var filtersItems = filters.querySelectorAll('.filters-item');
   for (var i = 0; i < filtersItems.length; i++) {
@@ -143,15 +164,11 @@ var setFiltrationEnabled = function() {
   }
 };
 
-// Не забудьте, что при любом исходе загрузки (успех, ошибка, таймаут), нужно прятать прелоадер
-
 getPictures(function(loadedPictures) {
   pictures = loadedPictures;
   setFiltrationEnabled();
   renderPictures(pictures);
 });
-
-
 
 // Отображает блок с фильтрами.
 filters.classList.remove('hidden');
