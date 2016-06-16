@@ -110,7 +110,12 @@ var getFilteredPictures = function(picturesArr, filter) {
     // Новые — список фотографий, сделанных за последние четыре дня,
     // отсортированные по убыванию даты (поле date).
     case Filter.NEW:
-      var lastFourDays = 4 * 24 * 60 * 60 * 1000;
+      var SECONDS = 1000;
+      var MINUTES = SECONDS * 60;
+      var HOURS = MINUTES * 60;
+      var DAYS = HOURS * 24;
+
+      var lastFourDays = 4 * DAYS;
       var today = new Date();
       var showLastFourDays = function(a) {
         var dateImgDownload = new Date(a.date);
