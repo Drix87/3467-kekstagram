@@ -8,7 +8,12 @@ var PICTURES_LOAD_URL = 'https://o0.github.io/assets/json/pictures.json';
 
 var ACTIVE_FILTER_CLASSNAME = 'picture-filter-active';
 
+var PAGE_SIZE = 10;
+var pageNumber = 0;
+
 var pictures = [];
+
+var filteredPictures = [];
 
 var Filter = {
   'POPULAR': 'filter-popular',
@@ -90,10 +95,45 @@ var getPictures = function(callback) {
   xhr.send();
 };
 
-var renderPictures = function(picturesArr) {
-  picturesContainer.innerHTML = '';
+var isBottomReached = function() {
+  // var GAP = 100;
+  var body = document.querySelector('body');
+  var bodyPosition = body.getBoundingClientRect().bottom;
+  return bodyPosition - window.innerHeight - 100 <= 0;
+};
 
-  picturesArr.forEach(function(picture) {
+var isNextPageAvailable = function(picturesArr, page, pageSize) {
+  return page < Math.floor(picturesArr.length / pageSize);
+};
+
+var THROTTLE_DELAY = 100;
+
+var setScrollEnabled = function() {
+  var lastCall = Date.now();
+
+  window.addEventListener('scroll', function() {
+    if (Date.now() - lastCall >= THROTTLE_DELAY) {
+      if (isBottomReached() &&
+          isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
+        console.log('!!!');
+        pageNumber++;
+        renderPictures(filteredPictures, pageNumber);
+      }
+      console.log('-111');
+      lastCall = Date.now();
+    }
+  });
+};
+
+var renderPictures = function(picturesArr, page, replace) {
+  if (replace) {
+    picturesContainer.innerHTML = '';
+  }
+
+  var from = page * PAGE_SIZE;
+  var to = from + PAGE_SIZE;
+
+  picturesArr.slice(from, to).forEach(function(picture) {
     getPictureElement(picture, picturesContainer);
   });
 };
@@ -147,8 +187,9 @@ var getFilteredPictures = function(picturesArr, filter) {
 };
 
 var setFilterEnabled = function(filter) {
-  var filteredPictures = getFilteredPictures(pictures, filter);
-  renderPictures(filteredPictures);
+  filteredPictures = getFilteredPictures(pictures, filter);
+  pageNumber = 0;
+  renderPictures(filteredPictures, pageNumber, true);
 
   var activeFilter = filters.querySelector('.' + ACTIVE_FILTER_CLASSNAME);
   if (activeFilter) {
@@ -160,19 +201,19 @@ var setFilterEnabled = function(filter) {
 
 // Напишите обработчики событий для фильтров, так, чтобы они
 // сортировали загруженный список фотографий следующим образом:
-var setFiltrationEnabled = function() {
-  var filtersItems = filters.querySelectorAll('.filters-item');
-  for (var i = 0; i < filtersItems.length; i++) {
-    filtersItems[i].onclick = function() {
-      setFilterEnabled(this.control.id);
-    };
-  }
+var setFiltersEnabled = function() {
+  filters.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('filters-radio')) {
+      setFilterEnabled(evt.target.id);
+    }
+  });
 };
 
 getPictures(function(loadedPictures) {
   pictures = loadedPictures;
-  setFiltrationEnabled();
-  renderPictures(pictures);
+  setFiltersEnabled();
+  renderPictures(pictures, 0);
+  setScrollEnabled();
 });
 
 // Отображает блок с фильтрами.
