@@ -86,14 +86,15 @@
       <span class="picture-stat picture-likes"></span>
     </span>
   </a>
+
 </template>
-<script>
-  var pictures = [];
-  var __picturesLoadCallback = function(data){
-    pictures = data;
-  };
-</script>
-<script src="https://up.htmlacademy.ru/assets/js_intensive/jsonp/pictures.js"></script>
+
+<template id="error-filter">
+  <div class="error-wrapper">
+    <div class="error-box">Ошибка Выбора фильтров</div>
+  </div>
+</template>
+
 <script src="js/main.js"></script>
 </body>
 </html>
