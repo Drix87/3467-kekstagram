@@ -96,10 +96,8 @@ var getPictures = function(callback) {
 };
 
 var isBottomReached = function() {
-  // var GAP = 100;
-  var body = document.querySelector('body');
-  var bodyPosition = body.getBoundingClientRect().bottom;
-  return bodyPosition - window.innerHeight - 100 <= 0;
+  var picuresPosition = picturesContainer.getBoundingClientRect();
+  return picuresPosition.top - window.innerHeight <= 0;
 };
 
 var isNextPageAvailable = function(picturesArr, page, pageSize) {
