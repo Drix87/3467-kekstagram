@@ -8,7 +8,7 @@ var PICTURES_LOAD_URL = 'https://o0.github.io/assets/json/pictures.json';
 
 var ACTIVE_FILTER_CLASSNAME = 'picture-filter-active';
 
-var PAGE_SIZE = 10;
+var PAGE_SIZE = 12;
 var pageNumber = 0;
 
 var pictures = [];
@@ -78,6 +78,12 @@ var getPictures = function(callback) {
     // нужно прятать прелоадер
     picturesContainer.classList.remove('pictures-loading');
     picturesContainer.classList.remove('pictures-failure');
+
+    // Если загрузка закончится неудачно (ошибкой сервера или таймаутом),
+    // покажите предупреждение об ошибке, добавив блоку .pictures класс pictures-failure.
+    if (xhr.status !== 200) {
+      picturesContainer.classList.add('pictures-failure');
+    }
   };
 
   // Пока длится загрузка файла, покажите прелоадер, добавив класс .pictures-loading блоку .pictures.
@@ -85,23 +91,18 @@ var getPictures = function(callback) {
     picturesContainer.classList.add('pictures-loading');
   };
 
-  // Если загрузка закончится неудачно (ошибкой сервера или таймаутом),
-  // покажите предупреждение об ошибке, добавив блоку .pictures класс pictures-failure.
-  if (xhr.status !== 200) {
-    picturesContainer.classList.add('pictures-failure');
-  }
-
   xhr.open('GET', PICTURES_LOAD_URL);
   xhr.send();
 };
 
-var isBottomReached = function() {
-  var picuresPosition = picturesContainer.getBoundingClientRect();
-  return picuresPosition.top - window.innerHeight <= 0;
+window.isBottomReached = function() {
+  var picturesPosition = picturesContainer.getBoundingClientRect();
+  return picturesPosition.bottom - window.innerHeight <= 0;
 };
 
 var isNextPageAvailable = function(picturesArr, page, pageSize) {
-  return page < Math.floor(picturesArr.length / pageSize);
+  console.log(page, Math.ceil(picturesArr.length / pageSize), picturesArr.length);
+  return page < Math.ceil(picturesArr.length / pageSize);
 };
 
 var THROTTLE_DELAY = 100;
@@ -111,8 +112,9 @@ var setScrollEnabled = function() {
 
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
-      if (isBottomReached() &&
-          isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
+      if (isBottomReached()
+         && isNextPageAvailable(filteredPictures, pageNumber, PAGE_SIZE)
+        ) {
         console.log('!!!');
         pageNumber++;
         renderPictures(filteredPictures, pageNumber);
