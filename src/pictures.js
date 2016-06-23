@@ -136,6 +136,7 @@ var renderPictures = function(picturesArr, page, replace) {
 };
 
 var getFilteredPictures = function(picturesArr, filter) {
+  debugger
   var picturesToFilter = picturesArr.slice(0);
 
   switch (filter) {
@@ -210,6 +211,7 @@ var setFiltersEnabled = function() {
       setFilterEnabled(evt.target.id);
     }
   });
+  setFilterEnabled();
 };
 
 getPictures(function(loadedPictures) {
