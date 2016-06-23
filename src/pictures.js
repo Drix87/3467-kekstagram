@@ -172,6 +172,7 @@ var getFilteredPictures = function(picturesArr, filter) {
 
     case undefined:
       setFilterEnabled();
+      console.log('111');
       break;
 
     // Сделайте так, чтобы если при фильтрации, ни один элемент из списка не
