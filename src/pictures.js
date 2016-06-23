@@ -136,7 +136,6 @@ var renderPictures = function(picturesArr, page, replace) {
 };
 
 var getFilteredPictures = function(picturesArr, filter) {
-  debugger
   var picturesToFilter = picturesArr.slice(0);
 
   switch (filter) {
@@ -172,7 +171,6 @@ var getFilteredPictures = function(picturesArr, filter) {
       break;
 
     case undefined:
-      console.log('1211');
       break;
 
     // Сделайте так, чтобы если при фильтрации, ни один элемент из списка не
@@ -211,11 +209,13 @@ var setFiltersEnabled = function() {
       setFilterEnabled(evt.target.id);
     }
   });
-  setFilterEnabled();
+
 };
 
 getPictures(function(loadedPictures) {
   pictures = loadedPictures;
+  filteredPictures = pictures.slice(0);
+  renderPictures(filteredPictures, 0);
   setFiltersEnabled();
   renderPictures(pictures, 0);
   setScrollEnabled();
