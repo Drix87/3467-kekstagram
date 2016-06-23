@@ -95,13 +95,12 @@ var getPictures = function(callback) {
   xhr.send();
 };
 
-window.isBottomReached = function() {
+var isBottomReached = function() {
   var picturesPosition = picturesContainer.getBoundingClientRect();
   return picturesPosition.bottom - window.innerHeight <= 0;
 };
 
 var isNextPageAvailable = function(picturesArr, page, pageSize) {
-  console.log(page, Math.ceil(picturesArr.length / pageSize), picturesArr.length);
   return page < Math.ceil(picturesArr.length / pageSize);
 };
 
@@ -115,11 +114,9 @@ var setScrollEnabled = function() {
       if (isBottomReached()
          && isNextPageAvailable(filteredPictures, pageNumber, PAGE_SIZE)
         ) {
-        console.log('!!!');
         pageNumber++;
         renderPictures(filteredPictures, pageNumber);
       }
-      console.log('-111');
       lastCall = Date.now();
     }
   });
@@ -144,7 +141,9 @@ var getFilteredPictures = function(picturesArr, filter) {
   switch (filter) {
     // Популярные — список фотографий, в том виде, в котором он был загружен
     case Filter.POPULAR:
-      // picturesToFilter.sort();
+       picturesToFilter.sort(function(a, b) {
+        return b.likes - a.likes;
+      });
       break;
 
     // Новые — список фотографий, сделанных за последние четыре дня,
