@@ -206,6 +206,7 @@ var setFiltersEnabled = function() {
       setFilterEnabled(evt.target.id);
     }
   });
+  setFilterEnabled();
 };
 
 getPictures(function(loadedPictures) {
