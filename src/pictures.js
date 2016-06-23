@@ -96,8 +96,9 @@ var getPictures = function(callback) {
 };
 
 var isBottomReached = function() {
+  var GAP = 100;
   var picturesPosition = picturesContainer.getBoundingClientRect();
-  return picturesPosition.bottom - window.innerHeight <= 0;
+  return picturesPosition.bottom - window.innerHeight - GAP <= 0;
 };
 
 var isNextPageAvailable = function(picturesArr, page, pageSize) {
