@@ -170,6 +170,10 @@ var getFilteredPictures = function(picturesArr, filter) {
       });
       break;
 
+    case undefined:
+      setFilterEnabled();
+      break;
+
     // Сделайте так, чтобы если при фильтрации, ни один элемент из списка не
     // подходит под выбранные критерии, в блоке выводилось соответствующее сообщение.
     default:
@@ -206,7 +210,6 @@ var setFiltersEnabled = function() {
       setFilterEnabled(evt.target.id);
     }
   });
-  setFilterEnabled();
 };
 
 getPictures(function(loadedPictures) {
