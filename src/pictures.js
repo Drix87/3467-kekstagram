@@ -142,7 +142,7 @@ var getFilteredPictures = function(picturesArr, filter) {
   switch (filter) {
     // Популярные — список фотографий, в том виде, в котором он был загружен
     case Filter.POPULAR:
-       picturesToFilter.sort(function(a, b) {
+      picturesToFilter.sort(function(a, b) {
         return b.likes - a.likes;
       });
       break;
@@ -171,22 +171,26 @@ var getFilteredPictures = function(picturesArr, filter) {
       });
       break;
 
-    case undefined:
-      break;
-
     // Сделайте так, чтобы если при фильтрации, ни один элемент из списка не
     // подходит под выбранные критерии, в блоке выводилось соответствующее сообщение.
     default:
-
-      var body = document.querySelector('body');
-      var templateError = document.querySelector('#error-filter');
-      var errorElement = templateError.content.querySelector('.error-wrapper');
-      errorElement = errorElement.cloneNode(true);
-      body.appendChild(errorElement);
+      showError();
       break;
   }
 
-  return picturesToFilter;
+  if (picturesToFilter.length === 0) {
+    showError();
+  } else {
+    return picturesToFilter;
+  }
+};
+
+var showError = function() {
+  var body = document.querySelector('body');
+  var templateError = document.querySelector('#error-filter');
+  var errorElement = templateError.content.querySelector('.error-wrapper');
+  errorElement = errorElement.cloneNode(true);
+  body.appendChild(errorElement);
 };
 
 var setFilterEnabled = function(filter) {
