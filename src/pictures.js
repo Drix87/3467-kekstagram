@@ -179,7 +179,7 @@ var getFilteredPictures = function(picturesArr, filter) {
   }
 
   if (picturesToFilter.length === 0) {
-    showError();
+    return showError();
   } else {
     return picturesToFilter;
   }
@@ -189,8 +189,14 @@ var showError = function() {
   var body = document.querySelector('body');
   var templateError = document.querySelector('#error-filter');
   var errorElement = templateError.content.querySelector('.error-wrapper');
+  var errorClose = templateError.content.querySelector('.error-close');
   errorElement = errorElement.cloneNode(true);
   body.appendChild(errorElement);
+
+  errorClose.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    console.log('!!!');
+  });
 };
 
 var setFilterEnabled = function(filter) {
