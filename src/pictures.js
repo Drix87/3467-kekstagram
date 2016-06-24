@@ -91,6 +91,7 @@ var getPictures = function(callback) {
     picturesContainer.classList.add('pictures-loading');
   };
 
+
   xhr.open('GET', PICTURES_LOAD_URL);
   xhr.send();
 };
@@ -189,13 +190,14 @@ var showError = function() {
   var body = document.querySelector('body');
   var templateError = document.querySelector('#error-filter');
   var errorElement = templateError.content.querySelector('.error-wrapper');
-  var errorClose = templateError.content.querySelector('.error-close');
   errorElement = errorElement.cloneNode(true);
   body.appendChild(errorElement);
 
+  var errorClose = document.querySelector('.error-close');
+  var errorWrap = document.querySelector('.error-wrapper');
   errorClose.addEventListener('click', function(evt) {
     evt.preventDefault();
-    console.log('!!!');
+    body.removeChild(errorWrap);
   });
 };
 
