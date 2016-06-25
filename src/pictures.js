@@ -8,7 +8,12 @@ var PICTURES_LOAD_URL = 'https://o0.github.io/assets/json/pictures.json';
 
 var ACTIVE_FILTER_CLASSNAME = 'picture-filter-active';
 
+var PAGE_SIZE = 12;
+var pageNumber = 0;
+
 var pictures = [];
+
+var filteredPictures = [];
 
 var Filter = {
   'POPULAR': 'filter-popular',
@@ -73,6 +78,12 @@ var getPictures = function(callback) {
     // нужно прятать прелоадер
     picturesContainer.classList.remove('pictures-loading');
     picturesContainer.classList.remove('pictures-failure');
+
+    // Если загрузка закончится неудачно (ошибкой сервера или таймаутом),
+    // покажите предупреждение об ошибке, добавив блоку .pictures класс pictures-failure.
+    if (xhr.status !== 200) {
+      picturesContainer.classList.add('pictures-failure');
+    }
   };
 
   // Пока длится загрузка файла, покажите прелоадер, добавив класс .pictures-loading блоку .pictures.
@@ -80,20 +91,48 @@ var getPictures = function(callback) {
     picturesContainer.classList.add('pictures-loading');
   };
 
-  // Если загрузка закончится неудачно (ошибкой сервера или таймаутом),
-  // покажите предупреждение об ошибке, добавив блоку .pictures класс pictures-failure.
-  if (xhr.status !== 200) {
-    picturesContainer.classList.add('pictures-failure');
-  }
 
   xhr.open('GET', PICTURES_LOAD_URL);
   xhr.send();
 };
 
-var renderPictures = function(picturesArr) {
-  picturesContainer.innerHTML = '';
+var isBottomReached = function() {
+  var GAP = 100;
+  var picturesPosition = picturesContainer.getBoundingClientRect();
+  return picturesPosition.bottom - window.innerHeight - GAP <= 0;
+};
 
-  picturesArr.forEach(function(picture) {
+var isNextPageAvailable = function(picturesArr, page, pageSize) {
+  return page < Math.ceil(picturesArr.length / pageSize);
+};
+
+var THROTTLE_DELAY = 100;
+
+var setScrollEnabled = function() {
+  var lastCall = Date.now();
+
+  window.addEventListener('scroll', function() {
+    if (Date.now() - lastCall >= THROTTLE_DELAY) {
+      if (isBottomReached()
+         && isNextPageAvailable(filteredPictures, pageNumber, PAGE_SIZE)
+        ) {
+        pageNumber++;
+        renderPictures(filteredPictures, pageNumber);
+      }
+      lastCall = Date.now();
+    }
+  });
+};
+
+var renderPictures = function(picturesArr, page, replace) {
+  if (replace) {
+    picturesContainer.innerHTML = '';
+  }
+
+  var from = page * PAGE_SIZE;
+  var to = from + PAGE_SIZE;
+
+  picturesArr.slice(from, to).forEach(function(picture) {
     getPictureElement(picture, picturesContainer);
   });
 };
@@ -104,7 +143,9 @@ var getFilteredPictures = function(picturesArr, filter) {
   switch (filter) {
     // Популярные — список фотографий, в том виде, в котором он был загружен
     case Filter.POPULAR:
-      // picturesToFilter.sort();
+      picturesToFilter.sort(function(a, b) {
+        return b.likes - a.likes;
+      });
       break;
 
     // Новые — список фотографий, сделанных за последние четыре дня,
@@ -134,21 +175,36 @@ var getFilteredPictures = function(picturesArr, filter) {
     // Сделайте так, чтобы если при фильтрации, ни один элемент из списка не
     // подходит под выбранные критерии, в блоке выводилось соответствующее сообщение.
     default:
-
-      var body = document.querySelector('body');
-      var templateError = document.querySelector('#error-filter');
-      var errorElement = templateError.content.querySelector('.error-wrapper');
-      errorElement = errorElement.cloneNode(true);
-      body.appendChild(errorElement);
+      showError();
       break;
   }
 
-  return picturesToFilter;
+  if (picturesToFilter.length === 0) {
+    return showError();
+  } else {
+    return picturesToFilter;
+  }
+};
+
+var showError = function() {
+  var body = document.querySelector('body');
+  var templateError = document.querySelector('#error-filter');
+  var errorElement = templateError.content.querySelector('.error-wrapper');
+  errorElement = errorElement.cloneNode(true);
+  body.appendChild(errorElement);
+
+  var errorClose = document.querySelector('.error-close');
+  var errorWrap = document.querySelector('.error-wrapper');
+  errorClose.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    body.removeChild(errorWrap);
+  });
 };
 
 var setFilterEnabled = function(filter) {
-  var filteredPictures = getFilteredPictures(pictures, filter);
-  renderPictures(filteredPictures);
+  filteredPictures = getFilteredPictures(pictures, filter);
+  pageNumber = 0;
+  renderPictures(filteredPictures, pageNumber, true);
 
   var activeFilter = filters.querySelector('.' + ACTIVE_FILTER_CLASSNAME);
   if (activeFilter) {
@@ -160,19 +216,22 @@ var setFilterEnabled = function(filter) {
 
 // Напишите обработчики событий для фильтров, так, чтобы они
 // сортировали загруженный список фотографий следующим образом:
-var setFiltrationEnabled = function() {
-  var filtersItems = filters.querySelectorAll('.filters-item');
-  for (var i = 0; i < filtersItems.length; i++) {
-    filtersItems[i].onclick = function() {
-      setFilterEnabled(this.control.id);
-    };
-  }
+var setFiltersEnabled = function() {
+  filters.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('filters-radio')) {
+      setFilterEnabled(evt.target.id);
+    }
+  });
+
 };
 
 getPictures(function(loadedPictures) {
   pictures = loadedPictures;
-  setFiltrationEnabled();
-  renderPictures(pictures);
+  filteredPictures = pictures.slice(0);
+  renderPictures(filteredPictures, 0);
+  setFiltersEnabled();
+  renderPictures(pictures, 0);
+  setScrollEnabled();
 });
 
 // Отображает блок с фильтрами.
