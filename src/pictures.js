@@ -1,17 +1,17 @@
 'use strict';
 
 var CONST = require('./constants');
+var cssSelectorsDictionary = require('./cssSelectorsDictionary');
 var getPictureElement = require('./render-image');
-var getFilteredPictures = require('./filter/filter');
+var getFilteredPictures = require('./filter');
 var utils = require('./utils');
 
-var picturesContainer = document.querySelector(CONST.picturesContainer);
-var PICTURES_LOAD_URL = CONST.PICTURES_LOAD_URL;
-var ACTIVE_FILTER_CLASSNAME = CONST.ACTIVE_FILTER_CLASSNAME;
-var PAGE_SIZE = CONST.PAGE_SIZE;
+var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesContainerClassName);
+var PICTURES_LOAD_URL = CONST.picturesLoadUrl;
+var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
+var pageSize = CONST.pageSize;
 var pageNumber = CONST.pageNumber;
-var filters = document.querySelector(CONST.filters);
-
+var filters = document.querySelector(cssSelectorsDictionary.filtersClassName);
 var pictures = [];
 var filteredPictures = [];
 
@@ -58,7 +58,7 @@ var setScrollEnabled = function() {
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
       if (utils.isBottomReached()
-         && utils.isNextPageAvailable(filteredPictures, pageNumber, PAGE_SIZE)
+         && utils.isNextPageAvailable(filteredPictures, pageNumber, pageSize)
         ) {
         pageNumber++;
         renderPictures(filteredPictures, pageNumber);
@@ -73,8 +73,8 @@ var renderPictures = function(picturesArr, page, replace) {
     picturesContainer.innerHTML = '';
   }
 
-  var from = page * PAGE_SIZE;
-  var to = from + PAGE_SIZE;
+  var from = page * pageSize;
+  var to = from + pageSize;
 
   picturesArr.slice(from, to).forEach(function(picture) {
     getPictureElement(picture, picturesContainer);

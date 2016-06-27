@@ -1,14 +1,15 @@
 'use strict';
 
-var FilterType = require('./filter-type');
-var utils = require('./../utils');
+var CONST = require('./constants');
+var cssSelectorsDictionary = require('./cssSelectorsDictionary');
+var utils = require('./utils');
 
 var getFilteredPictures = function(picturesArr, filter) {
   var picturesToFilter = picturesArr.slice(0);
 
   switch (filter) {
     // Популярные — список фотографий, в том виде, в котором он был загружен
-    case FilterType.POPULAR:
+    case cssSelectorsDictionary.filterPopularId:
       picturesToFilter.sort(function(a, b) {
         return b.likes - a.likes;
       });
@@ -16,12 +17,8 @@ var getFilteredPictures = function(picturesArr, filter) {
 
     // Новые — список фотографий, сделанных за последние четыре дня,
     // отсортированные по убыванию даты (поле date).
-    case FilterType.NEW:
-      var SECONDS = 1000;
-      var MINUTES = SECONDS * 60;
-      var HOURS = MINUTES * 60;
-      var DAYS = HOURS * 24;
-
+    case cssSelectorsDictionary.filterNewId:
+      var DAYS = CONST.days;
       var lastFourDays = 4 * DAYS;
       var today = new Date();
       var showLastFourDays = function(a) {
@@ -32,7 +29,7 @@ var getFilteredPictures = function(picturesArr, filter) {
       break;
 
     // Обсуждаемые — отсортированные по убыванию количества комментариев (поле comments)
-    case FilterType.DISCUSS:
+    case cssSelectorsDictionary.filterDiscussId:
       picturesToFilter.sort(function(a, b) {
         return b.comments - a.comments;
       });

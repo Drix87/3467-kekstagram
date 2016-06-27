@@ -7,6 +7,7 @@
 
 'use strict';
 
+var CONST = require('./constants');
 
 (function() {
   /** @enum {string} */
@@ -290,11 +291,11 @@
   function calculateDays() {
     var myBirthday = new Date('1987-09-30');
     var actualDay = new Date();
-    var SECONDS = 1000;
-    var MINUTES = SECONDS * 60;
-    var HOURS = MINUTES * 60;
-    var DAYS = HOURS * 24;
-    var YEARS = DAYS * 365;
+    var SECONDS = CONST.seconds;
+    var MINUTES = CONST.minutes;
+    var HOURS = CONST.hours;
+    var DAYS = CONST.days;
+    var YEARS = CONST.years;
     var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
     if((Date.now() - myBirthdayActualYear) > 0) {
       return Math.ceil((Date.now() - myBirthdayActualYear) / DAYS / HOURS / MINUTES / SECONDS);

@@ -1,16 +1,13 @@
 'use strict';
 
 module.exports = {
-  body: 'body',
-  picturesContainer: '.pictures',
-  templateElement: 'template',
-  errorElement: '.error-wrapper',
-  errorClose: '.error-close',
-  templateError: '#error-filter',
-  filters: '.filters',
-  PICTURES_LOAD_URL: 'https://o0.github.io/assets/json/pictures.json',
-  ACTIVE_FILTER_CLASSNAME: 'picture-filter-active',
-  PAGE_SIZE: 12,
+  picturesLoadUrl: 'https://o0.github.io/assets/json/pictures.json',
+  pageSize: 12,
   pageNumber: 0,
-  GAP: 100
+  gap: 100,
+  seconds: 1000,
+  minutes: 1000 * 60,
+  hours: 1000 * 60 * 60,
+  days: 1000 * 60 * 60 * 24,
+  yers: 1000 * 60 * 60 * 24 * 365
 };

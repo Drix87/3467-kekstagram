@@ -1,7 +1,7 @@
 'use strict';
 
-var CONST = require('./constants');
-var templateElement = document.querySelector(CONST.templateElement);
+var cssSelectorsDictionary = require('./cssSelectorsDictionary');
+var templateElement = document.querySelector(cssSelectorsDictionary.templateElement);
 var elementToClone;
 
 if ('content' in templateElement) {
