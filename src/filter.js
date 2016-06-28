@@ -45,10 +45,11 @@ var getFilteredPictures = function(picturesArr, filter) {
   }
 
   if (filteredPictures.length === 0) {
-    return utils.showError();
-  } else {
-    return filteredPictures;
+    utils.showError();
   }
+
+  return filteredPictures;
+
 };
 
 module.exports = getFilteredPictures;
