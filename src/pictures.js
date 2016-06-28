@@ -7,10 +7,9 @@ var getFilteredPictures = require('./filter');
 var utils = require('./utils');
 
 var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesContainerClassName);
-var PICTURES_LOAD_URL = CONST.picturesLoadUrl;
 var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
-var pageSize = CONST.pageSize;
-var pageNumber = CONST.pageNumber;
+var PAGE_SIZE = CONST.pageSize;
+var PAGE_NUMBER = CONST.pageNumber;
 var filters = document.querySelector(cssSelectorsDictionary.filtersClassName);
 var pictures = [];
 var filteredPictures = [];
@@ -46,7 +45,7 @@ var getPictures = function(callback) {
   };
 
 
-  xhr.open('GET', PICTURES_LOAD_URL);
+  xhr.open('GET', CONST.picturesLoadUrl);
   xhr.send();
 };
 
@@ -58,10 +57,10 @@ var setScrollEnabled = function() {
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
       if (utils.isBottomReached()
-         && utils.isNextPageAvailable(filteredPictures, pageNumber, pageSize)
+         && utils.isNextPageAvailable(filteredPictures, PAGE_NUMBER, PAGE_SIZE)
         ) {
-        pageNumber++;
-        renderPictures(filteredPictures, pageNumber);
+        PAGE_NUMBER++;
+        renderPictures(filteredPictures, PAGE_NUMBER);
       }
       lastCall = Date.now();
     }
@@ -73,8 +72,8 @@ var renderPictures = function(picturesArr, page, replace) {
     picturesContainer.innerHTML = '';
   }
 
-  var from = page * pageSize;
-  var to = from + pageSize;
+  var from = page * PAGE_SIZE;
+  var to = from + PAGE_SIZE;
 
   picturesArr.slice(from, to).forEach(function(picture) {
     getPictureElement(picture, picturesContainer);
@@ -83,8 +82,8 @@ var renderPictures = function(picturesArr, page, replace) {
 
 var setFilterEnabled = function(filter) {
   filteredPictures = getFilteredPictures(pictures, filter);
-  pageNumber = 0;
-  renderPictures(filteredPictures, pageNumber, true);
+  PAGE_NUMBER = 0;
+  renderPictures(filteredPictures, PAGE_NUMBER, true);
 
   var activeFilter = filters.querySelector('.' + ACTIVE_FILTER_CLASSNAME);
   if (activeFilter) {

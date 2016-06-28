@@ -291,16 +291,11 @@ var CONST = require('./constants');
   function calculateDays() {
     var myBirthday = new Date('1987-09-30');
     var actualDay = new Date();
-    var SECONDS = CONST.seconds;
-    var MINUTES = CONST.minutes;
-    var HOURS = CONST.hours;
-    var DAYS = CONST.days;
-    var YEARS = CONST.years;
     var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
     if((Date.now() - myBirthdayActualYear) > 0) {
-      return Math.ceil((Date.now() - myBirthdayActualYear) / DAYS / HOURS / MINUTES / SECONDS);
+      return Math.ceil((Date.now() - myBirthdayActualYear) / CONST.days / CONST.hours / CONST.minutes / CONST.seconds);
     } else {
-      return Math.ceil(Date.now() + (Date.now() - (myBirthdayActualYear - 1 * YEARS)));
+      return Math.ceil(Date.now() + (Date.now() - (myBirthdayActualYear - 1 * CONST.years)));
     }
   }
 
