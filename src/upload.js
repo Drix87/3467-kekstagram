@@ -7,6 +7,8 @@
 
 'use strict';
 
+var CONST = require('./constants');
+
 (function() {
   /** @enum {string} */
   var FileType = {
@@ -289,16 +291,11 @@
   function calculateDays() {
     var myBirthday = new Date('1987-09-30');
     var actualDay = new Date();
-    var SECONDS = 1000;
-    var MINUTES = SECONDS * 60;
-    var HOURS = MINUTES * 60;
-    var DAYS = HOURS * 24;
-    var YEARS = DAYS * 365;
     var myBirthdayActualYear = myBirthday.setFullYear(actualDay.getFullYear());
     if((Date.now() - myBirthdayActualYear) > 0) {
-      return Math.ceil((Date.now() - myBirthdayActualYear) / DAYS / HOURS / MINUTES / SECONDS);
+      return Math.ceil((Date.now() - myBirthdayActualYear) / CONST.days / CONST.hours / CONST.minutes / CONST.seconds);
     } else {
-      return Math.ceil(Date.now() + (Date.now() - (myBirthdayActualYear - 1 * YEARS)));
+      return Math.ceil(Date.now() + (Date.now() - (myBirthdayActualYear - 1 * CONST.years)));
     }
   }
 
