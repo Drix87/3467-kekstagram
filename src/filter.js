@@ -22,8 +22,8 @@ var getFilteredPictures = function(picturesArr, filter) {
     case cssSelectorsDictionary.filterNewId:
       var lastFourDays = 4 * CONST.days;
       var today = new Date();
-      var showLastFourDays = function(a) {
-        var dateImgDownload = new Date(a.date);
+      var showLastFourDays = function(data) {
+        var dateImgDownload = new Date(data.date);
         return dateImgDownload >= (today - lastFourDays);
       };
       filteredPictures = picturesToFilter.filter(showLastFourDays);
