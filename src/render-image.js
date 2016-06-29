@@ -1,6 +1,7 @@
 'use strict';
 
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
+var gallery = require('./gallery');
 var templateElement = document.querySelector(cssSelectorsDictionary.templateElement);
 var elementToClone;
 
@@ -39,6 +40,13 @@ var getPictureElement = function(data, container) {
   };
 
   elementImage.src = data.url;
+
+  //Вызывайте функцию показа галереи — в обработчике клика по блоку с фотографией
+  element.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    gallery.showGallery(data);
+    console.log(evt.target);
+  });
 
   return element;
 };

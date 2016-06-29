@@ -11,5 +11,12 @@ module.exports = {
   activeFilterClassname: 'picture-filter-active',
   filterPopularId: 'filter-popular',
   filterNewId: 'filter-new',
-  filterDiscussId: 'filter-discussed'
+  filterDiscussId: 'filter-discussed',
+  galleryOverlayClassName: '.gallery-overlay',
+  galleryWrapperClassName: '.gallery-overlay-preview',
+  galleryCloseClassName: '.gallery-overlay-close',
+  galleryImgClassName: '.gallery-overlay-image',
+  galleryLikesClassName: '.likes-count',
+  galleryCommentsClassName: '.comments-count'
 };
+
