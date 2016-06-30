@@ -14,10 +14,10 @@ var galleryPictures = [];
 // Создайте функцию показа фотографии по ее индексу в массиве, который был сохранен функцией показа галереи.
 // Эта функция должна показывать фотографию в полноэкранном режиме и подставлять в разметку количество лайков
 // и комментариев к этой фотографии
-var showPicture = function(picture) {
-  galleryImg.src = picture.url;
-  galleryLikes.innerHTML = picture.likes;
-  galleryComments.innerHTML = picture.comments;
+var showPicture = function(arrIndex, array) {
+  galleryImg.src = array[arrIndex].url;
+  galleryLikes.innerHTML = array[arrIndex].likes;
+  galleryComments.innerHTML = array[arrIndex].comments;
 };
 
 // Используйте эту функцию в функции показа галереи и обработчике переключения
@@ -38,16 +38,14 @@ module.exports = {
 
   // Создайте функцию показа галереи. Эта функция должна показывать уже существующий в разметке блок .gallery-overlay,
   // убирая у него класс invisible. Функция должна принимать на вход номер фотографии в галерее, с которой нужно начать показ
-  showGallery: function(picture) {
+  showGallery: function(numberPhoto) {
     galleryOverlay.classList.remove('invisible');
 
-
-    showPicture(picture);
+    showPicture(numberPhoto, galleryPictures);
 
     // После показа, добавьте обработчики событий на блок галереи:
     galleryImg.addEventListener('click', _onPhotoClick);
     document.addEventListener('keydown', _onDocumentKeyDown);
-
     // Закрыть галлерею по клику на Х
     galleryClose.addEventListener('click', function() {
       hideGallery();
@@ -64,8 +62,7 @@ module.exports = {
 // Обработчик события клика по фотографии _onPhotoClick, который будет показывать следующую фотографию.
 var _onPhotoClick = function() {
   console.log('Показать след. фото по клику');
-
-  showPicture();
+  // showPicture(Index, galleryPictures);
 };
 
 // Обработчик клавиатурных событий _onDocumentKeyDown, который вызывает закрытие галереи по нажатию Esc.

@@ -77,7 +77,7 @@ var renderPictures = function(picturesArr, page, replace) {
   var to = from + PAGE_SIZE;
 
   picturesArr.slice(from, to).forEach(function(picture) {
-    getPictureElement(picture, picturesContainer);
+    getPictureElement(picture, picturesContainer, picturesArr);
   });
 };
 
@@ -112,7 +112,6 @@ getPictures(function(loadedPictures) {
   filteredPictures = pictures.slice(0);
   renderPictures(filteredPictures, 0);
   setFiltersEnabled();
-  renderPictures(pictures, 0);
   setScrollEnabled();
 });
 
