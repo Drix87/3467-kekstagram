@@ -10,6 +10,7 @@ var galleryImg = document.querySelector(cssSelectorsDictionary.galleryImgClassNa
 var galleryClose = document.querySelector(cssSelectorsDictionary.galleryCloseClassName);
 
 var galleryPictures = [];
+var openedFotoIndex = {};
 
 // Создайте функцию показа фотографии по ее индексу в массиве, который был сохранен функцией показа галереи.
 // Эта функция должна показывать фотографию в полноэкранном режиме и подставлять в разметку количество лайков
@@ -42,6 +43,7 @@ module.exports = {
     galleryOverlay.classList.remove('invisible');
 
     showPicture(numberPhoto, galleryPictures);
+    openedFotoIndex = numberPhoto;
 
     // После показа, добавьте обработчики событий на блок галереи:
     galleryImg.addEventListener('click', _onPhotoClick);
@@ -49,6 +51,7 @@ module.exports = {
     // Закрыть галлерею по клику на Х
     galleryClose.addEventListener('click', function() {
       hideGallery();
+      openedFotoIndex -= 1;
     });
   },
 
@@ -61,13 +64,15 @@ module.exports = {
 
 // Обработчик события клика по фотографии _onPhotoClick, который будет показывать следующую фотографию.
 var _onPhotoClick = function() {
-  console.log('Показать след. фото по клику');
-  // showPicture(Index, galleryPictures);
+  debugger;
+  var nextFoto = openedFotoIndex += 1;
+  showPicture(nextFoto, galleryPictures);
 };
 
 // Обработчик клавиатурных событий _onDocumentKeyDown, который вызывает закрытие галереи по нажатию Esc.
 var _onDocumentKeyDown = function(evt) {
   if ((galleryOverlay.classList.contains('invisible') === false) && evt.keyCode === 27) {
     hideGallery();
+    openedFotoIndex -= 1;
   }
 };

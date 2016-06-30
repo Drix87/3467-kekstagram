@@ -45,7 +45,7 @@ var getPictureElement = function(data, container, array) {
   //Вызывайте функцию показа галереи — в обработчике клика по блоку с фотографией
   element.addEventListener('click', function(evt) {
     evt.preventDefault();
-    console.log(evt.target);
+    gallery.savedPictures(array);
     gallery.showGallery(iArr);
   });
 
