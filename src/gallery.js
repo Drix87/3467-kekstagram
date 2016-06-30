@@ -64,7 +64,6 @@ module.exports = {
 
 // Обработчик события клика по фотографии _onPhotoClick, который будет показывать следующую фотографию.
 var _onPhotoClick = function() {
-  debugger;
   var nextFoto = openedFotoIndex += 1;
   showPicture(nextFoto, galleryPictures);
 };
