@@ -1,6 +1,7 @@
 'use strict';
 
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
+var gallery = require('./gallery');
 var templateElement = document.querySelector(cssSelectorsDictionary.templateElement);
 var elementToClone;
 
@@ -12,8 +13,9 @@ if ('content' in templateElement) {
 
 // Создаёт для каждой записи массива pictures блок фотографии на основе
 // шаблона #picture-template. Шаблон находится в build/index.html.
-var getPictureElement = function(data, container) {
+var getPictureElement = function(data, container, array) {
   var element = elementToClone.cloneNode(true);
+  var iArr = array.indexOf(data);
   element.setAttribute('href', data.url);
   element.querySelector('.picture-comments').textContent = data.comments;
   element.querySelector('.picture-likes').textContent = data.likes;
@@ -39,6 +41,13 @@ var getPictureElement = function(data, container) {
   };
 
   elementImage.src = data.url;
+
+  //Вызывайте функцию показа галереи — в обработчике клика по блоку с фотографией
+  element.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    gallery.savedPictures(array);
+    gallery.showGallery(iArr);
+  });
 
   return element;
 };

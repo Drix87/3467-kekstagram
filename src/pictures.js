@@ -5,6 +5,7 @@ var cssSelectorsDictionary = require('./cssSelectorsDictionary');
 var getPictureElement = require('./render-image');
 var getFilteredPictures = require('./filter');
 var utils = require('./utils');
+var gallery = require('./gallery');
 
 var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesContainerClassName);
 var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
@@ -76,7 +77,7 @@ var renderPictures = function(picturesArr, page, replace) {
   var to = from + PAGE_SIZE;
 
   picturesArr.slice(from, to).forEach(function(picture) {
-    getPictureElement(picture, picturesContainer);
+    getPictureElement(picture, picturesContainer, picturesArr);
   });
 };
 
@@ -91,6 +92,9 @@ var setFilterEnabled = function(filter) {
   }
   var filterToActivate = document.getElementById(filter);
   filterToActivate.classList.add(ACTIVE_FILTER_CLASSNAME);
+
+  // Вызывайте функцию сохранения списка фотографий после фильтрации списка
+  gallery.savedPictures(filteredPictures);
 };
 
 // Напишите обработчики событий для фильтров, так, чтобы они
@@ -108,7 +112,6 @@ getPictures(function(loadedPictures) {
   filteredPictures = pictures.slice(0);
   renderPictures(filteredPictures, 0);
   setFiltersEnabled();
-  renderPictures(pictures, 0);
   setScrollEnabled();
 });
 
