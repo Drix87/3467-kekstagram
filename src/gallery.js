@@ -10,7 +10,7 @@ var galleryImg = document.querySelector(cssSelectorsDictionary.galleryImgClassNa
 var galleryClose = document.querySelector(cssSelectorsDictionary.galleryCloseClassName);
 
 var galleryPictures = [];
-var openedFotoIndex = {};
+var openedFotoIndex;
 
 // Создайте функцию показа фотографии по ее индексу в массиве, который был сохранен функцией показа галереи.
 // Эта функция должна показывать фотографию в полноэкранном режиме и подставлять в разметку количество лайков
@@ -51,7 +51,7 @@ module.exports = {
     // Закрыть галлерею по клику на Х
     galleryClose.addEventListener('click', function() {
       hideGallery();
-      openedFotoIndex -= 1;
+      openedFotoIndex = 1;
     });
   },
 
@@ -72,6 +72,6 @@ var _onPhotoClick = function() {
 var _onDocumentKeyDown = function(evt) {
   if ((galleryOverlay.classList.contains('invisible') === false) && evt.keyCode === 27) {
     hideGallery();
-    openedFotoIndex -= 1;
+    openedFotoIndex = 1;
   }
 };
