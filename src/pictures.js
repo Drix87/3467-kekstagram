@@ -2,10 +2,10 @@
 
 var CONST = require('./constants');
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
-var getPictureElement = require('./render-image');
 var getFilteredPictures = require('./filter');
 var utils = require('./utils');
 var gallery = require('./gallery');
+var Photo = require('./Photo');
 
 var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesContainerClassName);
 var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
@@ -76,8 +76,14 @@ var renderPictures = function(picturesArr, page, replace) {
   var from = page * PAGE_SIZE;
   var to = from + PAGE_SIZE;
 
+  var container = document.createDocumentFragment();
+
   picturesArr.slice(from, to).forEach(function(picture) {
-    getPictureElement(picture, picturesContainer, picturesArr);
+    debugger;
+    renderPictures.push(new Photo(picture, container, picturesArr));
+
+    picturesContainer.appendChild(container);
+    // getPictureElement(picture, picturesContainer, picturesArr);
   });
 };
 
