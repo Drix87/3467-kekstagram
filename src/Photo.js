@@ -5,7 +5,6 @@ var getPictureElement = require('./render-image');
 
 var Photo = function(data, container, array) {
   this.data = data;
-  debugger;
   this.element = getPictureElement(this.data, container, array);
   this.index = array.indexOf(this.data);
 

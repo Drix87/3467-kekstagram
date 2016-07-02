@@ -73,7 +73,6 @@ var renderPictures = function(picturesArr, page, replace) {
   if (replace) {
     renderedPictures.forEach(function(picture) {
       PAGE_NUMBER = 0;
-      debugger;
       picture.remove();
     });
     renderedPictures = [];
