@@ -19,30 +19,30 @@ var Gallery = function() {
   // Создайте функцию показа галереи. Эта функция должна показывать уже существующий в разметке блок .gallery-overlay,
   // убирая у него класс invisible. Функция должна принимать на вход номер фотографии в галерее, с которой нужно начать показ
   this.showGallery = function(numberPhoto) {
-    this.galleryOverlay.classList.remove('invisible');
+    self.galleryOverlay.classList.remove('invisible');
     self.showPicture(numberPhoto, self.galleryPictures);
-    this.openedFotoIndex = numberPhoto;
+    self.openedFotoIndex = numberPhoto;
 
     // После показа, добавьте обработчики событий на блок галереи:
-    this.galleryImg.addEventListener('click', this._onPhotoClick);
+    self.galleryImg.addEventListener('click', this._onPhotoClick);
     document.addEventListener('keydown', this._onDocumentKeyDown);
     // Закрыть галлерею по клику на Х
-    this.galleryClose.addEventListener('click', function() {
+    self.galleryClose.addEventListener('click', function() {
       self.hideGallery();
       self.openedFotoIndex = 1;
     });
   };
   this.showPicture = function(arrIndex, array) {
-    this.galleryImg.src = array[arrIndex].url;
-    this.galleryLikes.innerHTML = array[arrIndex].likes;
-    this.galleryComments.innerHTML = array[arrIndex].comments;
+    self.galleryImg.src = array[arrIndex].url;
+    self.galleryLikes.innerHTML = array[arrIndex].likes;
+    self.galleryComments.innerHTML = array[arrIndex].comments;
   };
 
   this.hideGallery = function() {
-    this.galleryOverlay.classList.add('invisible');
+    self.galleryOverlay.classList.add('invisible');
 
     // Удаляем обработчики
-    this.galleryImg.removeEventListener('click', this._onPhotoClick);
+    self.galleryImg.removeEventListener('click', this._onPhotoClick);
     document.removeEventListener('keydown', this._onDocumentKeyDown);
   };
 
@@ -59,7 +59,7 @@ var Gallery = function() {
   // Создайте функцию. Она будет принимать на вход массив объектов,
   // описывающих фотографии, и сохранять их
   this.savedPictures = function(pictures) {
-    this.galleryPictures = pictures;
+    self.galleryPictures = pictures;
   };
 };
 
