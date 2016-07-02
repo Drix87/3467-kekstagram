@@ -14,6 +14,7 @@ var PAGE_NUMBER = CONST.pageNumber;
 var filters = document.querySelector(cssSelectorsDictionary.filtersClassName);
 var pictures = [];
 var filteredPictures = [];
+var renderedPictures = [];
 
 // Прячет блок с фильтрами .filters, добавляя ему класс hidden.
 filters.classList.add('hidden');
@@ -70,7 +71,12 @@ var setScrollEnabled = function() {
 
 var renderPictures = function(picturesArr, page, replace) {
   if (replace) {
-    picturesContainer.innerHTML = '';
+    renderedPictures.forEach(function(picture) {
+      PAGE_NUMBER = 0;
+      debugger;
+      picture.remove();
+    });
+    renderedPictures = [];
   }
 
   var from = page * PAGE_SIZE;
@@ -79,11 +85,9 @@ var renderPictures = function(picturesArr, page, replace) {
   var container = document.createDocumentFragment();
 
   picturesArr.slice(from, to).forEach(function(picture) {
-    debugger;
-    renderPictures.push(new Photo(picture, container, picturesArr));
+    renderedPictures.push(new Photo(picture, container, picturesArr));
 
     picturesContainer.appendChild(container);
-    // getPictureElement(picture, picturesContainer, picturesArr);
   });
 };
 
