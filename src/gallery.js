@@ -24,8 +24,8 @@ var Gallery = function() {
     self.openedFotoIndex = numberPhoto;
 
     // После показа, добавьте обработчики событий на блок галереи:
-    self.galleryImg.addEventListener('click', this._onPhotoClick);
-    document.addEventListener('keydown', this._onDocumentKeyDown);
+    self.galleryImg.addEventListener('click', self._onPhotoClick);
+    document.addEventListener('keydown', self._onDocumentKeyDown);
     // Закрыть галлерею по клику на Х
     self.galleryClose.addEventListener('click', function() {
       self.hideGallery();
@@ -42,8 +42,8 @@ var Gallery = function() {
     self.galleryOverlay.classList.add('invisible');
 
     // Удаляем обработчики
-    self.galleryImg.removeEventListener('click', this._onPhotoClick);
-    document.removeEventListener('keydown', this._onDocumentKeyDown);
+    self.galleryImg.removeEventListener('click', self._onPhotoClick);
+    document.removeEventListener('keydown', self._onDocumentKeyDown);
   };
 
   this._onPhotoClick = function() {
