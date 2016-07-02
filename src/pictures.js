@@ -2,10 +2,10 @@
 
 var CONST = require('./constants');
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
-var getPictureElement = require('./render-image');
 var getFilteredPictures = require('./filter');
 var utils = require('./utils');
 var gallery = require('./gallery');
+var Photo = require('./Photo');
 
 var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesContainerClassName);
 var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
@@ -14,6 +14,7 @@ var PAGE_NUMBER = CONST.pageNumber;
 var filters = document.querySelector(cssSelectorsDictionary.filtersClassName);
 var pictures = [];
 var filteredPictures = [];
+var renderedPictures = [];
 
 // Прячет блок с фильтрами .filters, добавляя ему класс hidden.
 filters.classList.add('hidden');
@@ -70,14 +71,22 @@ var setScrollEnabled = function() {
 
 var renderPictures = function(picturesArr, page, replace) {
   if (replace) {
-    picturesContainer.innerHTML = '';
+    renderedPictures.forEach(function(picture) {
+      PAGE_NUMBER = 0;
+      picture.remove();
+    });
+    renderedPictures = [];
   }
 
   var from = page * PAGE_SIZE;
   var to = from + PAGE_SIZE;
 
+  var container = document.createDocumentFragment();
+
   picturesArr.slice(from, to).forEach(function(picture) {
-    getPictureElement(picture, picturesContainer, picturesArr);
+    renderedPictures.push(new Photo(picture, container, picturesArr));
+
+    picturesContainer.appendChild(container);
   });
 };
 
