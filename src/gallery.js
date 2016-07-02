@@ -2,76 +2,68 @@
 
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
 
-var galleryOverlay = document.querySelector(cssSelectorsDictionary.galleryOverlayClassName);
-var galleryWrapper = document.querySelector(cssSelectorsDictionary.galleryWrapperClassName);
-var galleryLikes = galleryWrapper.querySelector(cssSelectorsDictionary.galleryLikesClassName);
-var galleryComments = galleryWrapper.querySelector(cssSelectorsDictionary.galleryCommentsClassName);
-var galleryImg = document.querySelector(cssSelectorsDictionary.galleryImgClassName);
-var galleryClose = document.querySelector(cssSelectorsDictionary.galleryCloseClassName);
+var Gallery = function() {
+  var self = this;
 
-var galleryPictures = [];
-var openedFotoIndex;
+  self.galleryOverlay = document.querySelector(cssSelectorsDictionary.galleryOverlayClassName);
+  self.galleryWrapper = document.querySelector(cssSelectorsDictionary.galleryWrapperClassName);
+  self.galleryLikes = self.galleryWrapper.querySelector(cssSelectorsDictionary.galleryLikesClassName);
+  self.galleryComments = self.galleryWrapper.querySelector(cssSelectorsDictionary.galleryCommentsClassName);
+  self.galleryImg = document.querySelector(cssSelectorsDictionary.galleryImgClassName);
+  self.galleryClose = document.querySelector(cssSelectorsDictionary.galleryCloseClassName);
 
-// Создайте функцию показа фотографии по ее индексу в массиве, который был сохранен функцией показа галереи.
-// Эта функция должна показывать фотографию в полноэкранном режиме и подставлять в разметку количество лайков
-// и комментариев к этой фотографии
-var showPicture = function(arrIndex, array) {
-  galleryImg.src = array[arrIndex].url;
-  galleryLikes.innerHTML = array[arrIndex].likes;
-  galleryComments.innerHTML = array[arrIndex].comments;
-};
+  self.galleryPictures = [];
+  self.openedFotoIndex = null;
 
-// Используйте эту функцию в функции показа галереи и обработчике переключения
-
-// Создайте функцию, которая скрывает галерею. Вызывайте эту функцию или по клику на черный оверлей вокруг
-// фотографии или по нажатию на Esc. После скрытия галереи эта же функция, должна удалять добавленные обработчики событий
-var hideGallery = function() {
-  galleryOverlay.classList.add('invisible');
-
-  // Удаляем обработчики
-  galleryImg.removeEventListener('click', _onPhotoClick);
-  document.removeEventListener('keydown', _onDocumentKeyDown);
-};
-
-// Экспортируйте из модуля функцию показа галереи и функцию сохранения списка фотографий.
-// Остальные функции и переменные должны остаться инкапсулированными
-module.exports = {
 
   // Создайте функцию показа галереи. Эта функция должна показывать уже существующий в разметке блок .gallery-overlay,
   // убирая у него класс invisible. Функция должна принимать на вход номер фотографии в галерее, с которой нужно начать показ
-  showGallery: function(numberPhoto) {
-    galleryOverlay.classList.remove('invisible');
-
-    showPicture(numberPhoto, galleryPictures);
-    openedFotoIndex = numberPhoto;
+  self.showGallery = function(numberPhoto) {
+    self.galleryOverlay.classList.remove('invisible');
+    self.showPicture(numberPhoto, self.galleryPictures);
+    self.openedFotoIndex = numberPhoto;
 
     // После показа, добавьте обработчики событий на блок галереи:
-    galleryImg.addEventListener('click', _onPhotoClick);
-    document.addEventListener('keydown', _onDocumentKeyDown);
+    self.galleryImg.addEventListener('click', self._onPhotoClick);
+    document.addEventListener('keydown', self._onDocumentKeyDown);
     // Закрыть галлерею по клику на Х
-    galleryClose.addEventListener('click', function() {
-      hideGallery();
-      openedFotoIndex = 1;
+    self.galleryClose.addEventListener('click', function() {
+      self.hideGallery();
+      self.openedFotoIndex = 1;
     });
-  },
+  };
+  self.showPicture = function(arrIndex, array) {
+    self.galleryImg.src = array[arrIndex].url;
+    self.galleryLikes.innerHTML = array[arrIndex].likes;
+    self.galleryComments.innerHTML = array[arrIndex].comments;
+  };
 
+  self.hideGallery = function() {
+    self.galleryOverlay.classList.add('invisible');
+
+    // Удаляем обработчики
+    self.galleryImg.removeEventListener('click', self._onPhotoClick);
+    document.removeEventListener('keydown', self._onDocumentKeyDown);
+  };
+
+  self._onPhotoClick = function() {
+    var nextFoto = self.openedFotoIndex += 1;
+    self.showPicture(nextFoto, self.galleryPictures);
+  };
+  self._onDocumentKeyDown = function(evt) {
+    if ((self.galleryOverlay.classList.contains('invisible') === false) && evt.keyCode === 27) {
+      self.hideGallery();
+      self.openedFotoIndex = 1;
+    }
+  };
   // Создайте функцию. Она будет принимать на вход массив объектов,
   // описывающих фотографии, и сохранять их
-  savedPictures: function(pictures) {
-    galleryPictures = pictures;
-  }
+  self.savedPictures = function(pictures) {
+    self.galleryPictures = pictures;
+  };
 };
 
-// Обработчик события клика по фотографии _onPhotoClick, который будет показывать следующую фотографию.
-var _onPhotoClick = function() {
-  var nextFoto = openedFotoIndex += 1;
-  showPicture(nextFoto, galleryPictures);
-};
 
-// Обработчик клавиатурных событий _onDocumentKeyDown, который вызывает закрытие галереи по нажатию Esc.
-var _onDocumentKeyDown = function(evt) {
-  if ((galleryOverlay.classList.contains('invisible') === false) && evt.keyCode === 27) {
-    hideGallery();
-    openedFotoIndex = 1;
-  }
-};
+
+module.exports = Gallery;
+

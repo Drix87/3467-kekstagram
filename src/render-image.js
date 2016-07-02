@@ -1,9 +1,10 @@
 'use strict';
 
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
-var gallery = require('./gallery');
+var Gallery = require('./gallery');
 var templateElement = document.querySelector(cssSelectorsDictionary.templateElement);
 var elementToClone;
+var galleryObj = new Gallery();
 
 if ('content' in templateElement) {
   elementToClone = templateElement.content.querySelector('.picture');
@@ -45,8 +46,8 @@ var getPictureElement = function(data, container, array) {
   //Вызывайте функцию показа галереи — в обработчике клика по блоку с фотографией
   element.addEventListener('click', function(evt) {
     evt.preventDefault();
-    gallery.savedPictures(array);
-    gallery.showGallery(iArr);
+    galleryObj.savedPictures(array);
+    galleryObj.showGallery(iArr);
   });
 
   return element;
