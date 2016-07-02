@@ -1,7 +1,7 @@
 'use strict';
 
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
-var Gallery = require('./Gallery');
+var Gallery = require('./gallery');
 var templateElement = document.querySelector(cssSelectorsDictionary.templateElement);
 var elementToClone;
 var galleryObj = new Gallery();

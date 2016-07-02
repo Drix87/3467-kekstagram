@@ -4,7 +4,7 @@ var CONST = require('./constants');
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
 var getFilteredPictures = require('./filter');
 var utils = require('./utils');
-var Gallery = require('./Gallery');
+var Gallery = require('./gallery');
 var Photo = require('./Photo');
 
 var galleryObj = new Gallery();
