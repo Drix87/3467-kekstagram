@@ -1,7 +1,8 @@
 'use strict';
 
-var gallery = require('./gallery');
+var Gallery = require('./Gallery');
 var getPictureElement = require('./render-image');
+var galleryObj = new Gallery();
 
 var Photo = function(data, container, array) {
   this.data = data;
@@ -10,7 +11,7 @@ var Photo = function(data, container, array) {
 
   //Вызывайте функцию показа галереи — в обработчике клика по блоку с фотографией
   this.onPictureClick = function() {
-    gallery.showGallery(this.index);
+    galleryObj.showGallery(this.index);
   };
 
   this.remove = function() {

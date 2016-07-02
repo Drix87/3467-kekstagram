@@ -4,9 +4,10 @@ var CONST = require('./constants');
 var cssSelectorsDictionary = require('./cssSelectorsDictionary');
 var getFilteredPictures = require('./filter');
 var utils = require('./utils');
-var gallery = require('./gallery');
+var Gallery = require('./Gallery');
 var Photo = require('./Photo');
 
+var galleryObj = new Gallery();
 var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesContainerClassName);
 var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
 var PAGE_SIZE = CONST.pageSize;
@@ -103,7 +104,7 @@ var setFilterEnabled = function(filter) {
   filterToActivate.classList.add(ACTIVE_FILTER_CLASSNAME);
 
   // Вызывайте функцию сохранения списка фотографий после фильтрации списка
-  gallery.savedPictures(filteredPictures);
+  galleryObj.savedPictures(filteredPictures);
 };
 
 // Напишите обработчики событий для фильтров, так, чтобы они
