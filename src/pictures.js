@@ -12,6 +12,7 @@ var picturesContainer = document.querySelector(cssSelectorsDictionary.picturesCo
 var ACTIVE_FILTER_CLASSNAME = cssSelectorsDictionary.activeFilterClassname;
 var PAGE_SIZE = CONST.pageSize;
 var PAGE_NUMBER = CONST.pageNumber;
+var myStorage = localStorage;
 var filters = document.querySelector(cssSelectorsDictionary.filtersClassName);
 var pictures = [];
 var filteredPictures = [];
@@ -105,6 +106,8 @@ var setFilterEnabled = function(filter) {
 
   // Вызывайте функцию сохранения списка фотографий после фильтрации списка
   galleryObj.savedPictures(filteredPictures);
+
+  return filter;
 };
 
 // Напишите обработчики событий для фильтров, так, чтобы они
@@ -113,6 +116,7 @@ var setFiltersEnabled = function() {
   filters.addEventListener('click', function(evt) {
     if (evt.target.classList.contains('filters-radio')) {
       setFilterEnabled(evt.target.id);
+      myStorage.setItem('activeFilter', evt.target.id);
     }
   });
 };
@@ -121,6 +125,10 @@ getPictures(function(loadedPictures) {
   pictures = loadedPictures;
   filteredPictures = pictures.slice(0);
   renderPictures(filteredPictures, 0);
+  setFilterEnabled(myStorage.getItem('activeFilter'));
+  var filterFromStorage = document.getElementById(myStorage.getItem('activeFilter'));
+  filterFromStorage.setAttribute('checked', '');
+  filterFromStorage.classList.add(ACTIVE_FILTER_CLASSNAME);
   setFiltersEnabled();
   setScrollEnabled();
 });
