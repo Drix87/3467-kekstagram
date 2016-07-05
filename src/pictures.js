@@ -125,7 +125,9 @@ getPictures(function(loadedPictures) {
   pictures = loadedPictures;
   filteredPictures = pictures.slice(0);
   renderPictures(filteredPictures, 0);
-  setFilterEnabled(myStorage.getItem('activeFilter'));
+  if(myStorage.getItem('activeFilter')) {
+    setFilterEnabled(myStorage.getItem('activeFilter'));
+  }
   var filterFromStorage = document.getElementById(myStorage.getItem('activeFilter'));
   filterFromStorage.setAttribute('checked', '');
   filterFromStorage.classList.add(ACTIVE_FILTER_CLASSNAME);
