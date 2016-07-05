@@ -21,7 +21,6 @@ var Gallery = function() {
   self.showGallery = function(numberPhoto) {
     self.galleryOverlay.classList.remove('invisible');
     self.showPicture(numberPhoto, self.galleryPictures);
-    self.openedFotoIndex = numberPhoto;
 
     // После показа, добавьте обработчики событий на блок галереи:
     self.galleryImg.addEventListener('click', self._onPhotoClick);
@@ -31,15 +30,41 @@ var Gallery = function() {
       self.hideGallery();
       self.openedFotoIndex = 1;
     });
+
   };
-  self.showPicture = function(arrIndex, array) {
-    self.galleryImg.src = array[arrIndex].url;
-    self.galleryLikes.innerHTML = array[arrIndex].likes;
-    self.galleryComments.innerHTML = array[arrIndex].comments;
+  self.showPicture = function(photo, array) {
+    if (typeof photo === 'string') {
+      console.log('IT IS STRINGGGG');
+      window.location.hash = photo;
+      var findIndexOfArray = function(obj) {
+        return '#photo/' + obj.url === photo;
+      };
+      var indexArray = array.findIndex(findIndexOfArray);
+      self.openedFotoIndex = indexArray;
+      self.galleryImg.src = array[indexArray].url;
+      self.galleryLikes.innerHTML = array[indexArray].likes;
+      self.galleryComments.innerHTML = array[indexArray].comments;
+    } else if (typeof photo === 'number') {
+      self.galleryImg.src = array[photo].url;
+      self.galleryLikes.innerHTML = array[photo].likes;
+      self.galleryComments.innerHTML = array[photo].comments;
+    }
+  };
+
+  window.addEventListener('hashchange', function() {
+    self.restoreFromHash();
+  });
+
+  self.restoreFromHash = function() {
+    var arrHash = window.location.hash.match(/#photo\/(\S+)/);
+    if (arrHash !== null) {
+      self.showGallery(arrHash[0]);
+    }
   };
 
   self.hideGallery = function() {
     self.galleryOverlay.classList.add('invisible');
+    window.location.hash = '';
 
     // Удаляем обработчики
     self.galleryImg.removeEventListener('click', self._onPhotoClick);
@@ -48,7 +73,7 @@ var Gallery = function() {
 
   self._onPhotoClick = function() {
     var nextFoto = self.openedFotoIndex += 1;
-    self.showPicture(nextFoto, self.galleryPictures);
+    window.location.hash = 'photo/' + self.galleryPictures[nextFoto].url;
   };
   self._onDocumentKeyDown = function(evt) {
     if ((self.galleryOverlay.classList.contains('invisible') === false) && evt.keyCode === 27) {

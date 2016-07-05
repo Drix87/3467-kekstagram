@@ -47,7 +47,7 @@ var getPictureElement = function(data, container, array) {
   element.addEventListener('click', function(evt) {
     evt.preventDefault();
     galleryObj.savedPictures(array);
-    galleryObj.showGallery(iArr);
+    window.location.hash = 'photo/' + data.url;
   });
 
   return element;
