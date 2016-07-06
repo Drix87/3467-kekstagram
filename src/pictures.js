@@ -130,9 +130,11 @@ getPictures(function(loadedPictures) {
     var filterFromStorage = document.getElementById(myStorage.getItem('activeFilter'));
     filterFromStorage.setAttribute('checked', '');
     filterFromStorage.classList.add(ACTIVE_FILTER_CLASSNAME);
+    galleryObj.restoreFromHash();
   }
   setFiltersEnabled();
   setScrollEnabled();
+
 });
 
 // Отображает блок с фильтрами.
