@@ -16,7 +16,6 @@ if ('content' in templateElement) {
 // шаблона #picture-template. Шаблон находится в build/index.html.
 var getPictureElement = function(data, container, array) {
   var element = elementToClone.cloneNode(true);
-  var iArr = array.indexOf(data);
   element.setAttribute('href', data.url);
   element.querySelector('.picture-comments').textContent = data.comments;
   element.querySelector('.picture-likes').textContent = data.likes;
